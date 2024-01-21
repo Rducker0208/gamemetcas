@@ -41,7 +41,10 @@ class Player:
 class Druif:
     def __init__(self, druif_id):
         self.id = druif_id
-        self.circle = None
+        self.angle = 0
+        self.rot = random.choice((-2, 2))
+        self.image = pygame.transform.rotozoom(pygame.image.load(".\\Resources\\grape.png").convert_alpha(), 0, .5)
+        self.rect = self.image.get_rect()
         spawn_zone = None
         spawn_location = random.randint(1, 20)
 
@@ -66,10 +69,21 @@ class Druif:
         print(f"Druif {self.id}, coörds: {(self.x, self.y)}, spawn zone: {spawn_zone}")
 
     def drawDruif(self):
-        self.circle = pygame.draw.circle(screen, "yellow", (self.x, self.y), 25)
+        rotated_image = pygame.transform.rotate(self.image, self.angle)
+        self.rect = rotated_image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
+        if self.angle == 24:
+            self.rot = -2
+        elif self.angle == -24:
+            self.rot = 2
+        self.angle += self.rot
+        screen.blit(rotated_image, self.rect)
 
     def collision(self):
-        if abs(player.rect.centerx - self.x) < 50 and abs(player.rect.centery - self.y) < 75:
+        # if abs(player.rect.centerx - self.x) < 50 and abs(player.rect.centery - self.y) < 75:
+        #     return True
+        # else:
+        #     return False
+        if self.rect.colliderect(player.rect):
             return True
         else:
             return False
@@ -85,8 +99,8 @@ class Attack_1:
 pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SCREEN_SIZE)
-screen.fill((255, 255, 255))
 pygame.display.set_caption("Ricky & Caas Productions")
+
 
 # kleuren
 WHITE = (255, 255, 255)
@@ -101,11 +115,12 @@ zeus.x -= zeus.width / 2
 player = Player()
 
 # bg
-bg_surface = pygame.transform.rotozoom(pygame.image.load("Resources\\Naamloos.png").convert(),0 ,1)
+bg_surface = pygame.image.load("Resources\\Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
 # text
-arial_font = pygame.font.SysFont('Arial', 50)
+# arial_font = pygame.font.SysFont('Arial', 50)
+font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
 def main():
@@ -120,13 +135,13 @@ def main():
             if event.type == pygame.QUIT:
                 quit()
         screen.blit(bg_surface, bg_rect)
-        screen.blit(arial_font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 75))
         for i, druif in druifDict.items():
             druif.update()
             if druif.collision():
-                druifDict[druif.id] = Druif(druif.id)
+                druifDict[i] = Druif(i)
                 score += 1
         player.update()
+        screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
         pygame.draw.rect(screen, RED, zeus)
 
         pygame.display.update()

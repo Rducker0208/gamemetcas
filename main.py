@@ -69,7 +69,7 @@ class Druif:
         print(f"Druif {self.id}, coörds: {(self.x, self.y)}, spawn zone: {spawn_zone}")
 
     def drawDruif(self):
-        rotated_image = pygame.transform.rotate(self.image, self.angle - .5)
+        rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = rotated_image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
         if self.angle == 24:
             self.rot = -2
@@ -101,6 +101,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Ricky & Caas Productions")
 
+
 # kleuren
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -118,7 +119,8 @@ bg_surface = pygame.image.load("Resources\\Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
 # text
-arial_font = pygame.font.SysFont('Arial', 50)
+# arial_font = pygame.font.SysFont('Arial', 50)
+font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
 def main():
@@ -139,7 +141,7 @@ def main():
                 druifDict[i] = Druif(i)
                 score += 1
         player.update()
-        screen.blit(arial_font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 75))
+        screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
         pygame.draw.rect(screen, RED, zeus)
 
         pygame.display.update()

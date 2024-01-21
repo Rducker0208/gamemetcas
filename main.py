@@ -42,6 +42,7 @@ class Druif:
     def __init__(self, druif_id):
         self.id = druif_id
         self.angle = 0
+        self.rot = random.choice((-2, 2))
         self.image = pygame.transform.rotozoom(pygame.image.load(".\\Resources\\grape.png").convert_alpha(), 0, .5)
         self.rect = self.image.get_rect()
         spawn_zone = None
@@ -65,18 +66,18 @@ class Druif:
             self.y = random.randint(25, 100)
             spawn_zone = 3
 
-        #print(f"Druif {self.id}, coörds: {(self.x, self.y)}, spawn zone: {spawn_zone}")
+        print(f"Druif {self.id}, coörds: {(self.x, self.y)}, spawn zone: {spawn_zone}")
 
     def drawDruif(self):
-        screen.blit(self.rot_center(self.image, self.angle, self.x, self.y)[0], self.rect)
+        rotated_image = pygame.transform.rotate(self.image, self.angle - .5)
+        self.rect = rotated_image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)
+        if self.angle == 24:
+            self.rot = -2
+        elif self.angle == -24:
+            self.rot = 2
+        self.angle += self.rot
+        screen.blit(rotated_image, self.rect)
 
-    def rot_center(self, image, angle, x, y):
-
-        rotated_image = pygame.transform.rotate(image, angle)
-        self.rect = rotated_image.get_rect(center=image.get_rect(center=(x, y)).center)
-        self.angle += 1
-
-        return rotated_image, self.rect
     def collision(self):
         # if abs(player.rect.centerx - self.x) < 50 and abs(player.rect.centery - self.y) < 75:
         #     return True

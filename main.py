@@ -8,65 +8,96 @@ SCREEN_SIZE = (1000, 600)
 # player
 class Player:
     def __init__(self):
-        self.imagesR = [".\\Resources\\player\\playerWalk1.png",
-                        ".\\Resources\\player\\playerWalk2.png",
-                        ".\\Resources\\player\\playerWalk3.png",
-                        ".\\Resources\\player\\playerWalk4.png",
-                        ".\\Resources\\player\\playerWalk5.png",
-                        ".\\Resources\\player\\playerWalk6.png",
-                        ".\\Resources\\player\\playerWalk7.png",
-                        ".\\Resources\\player\\playerWalk8.png", ]
-        self.imagesL = [".\\Resources\\player\\playerWalkL1.png",
-                        ".\\Resources\\player\\playerWalkL2.png",
-                        ".\\Resources\\player\\playerWalkL3.png",
-                        ".\\Resources\\player\\playerWalkL4.png",
-                        ".\\Resources\\player\\playerWalkL5.png",
-                        ".\\Resources\\player\\playerWalkL6.png",
-                        ".\\Resources\\player\\playerWalkL7.png",
-                        ".\\Resources\\player\\playerWalkL8.png", ]
-        self.surface = pygame.transform.scale_by(pygame.image.load(".\\Resources\\player\\playerWalk1.png"), 1.5)
-        self.rect = self.surface.get_rect()
+        self.imagesR = [pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk1.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk2.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk3.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk4.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk5.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk6.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk7.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalk8.png").convert_alpha(), 2.5)]
+        self.imagesL = [pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL1.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL2.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL3.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL4.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL5.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL6.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL7.png").convert_alpha(), 2.5),
+                        pygame.transform.scale_by(pygame.image.load
+                                                  (".\\Resources\\player\\playerWalkL8.png").convert_alpha(), 2.5)]
+        self.surface = pygame.transform.scale_by(pygame.image.load(".\\Resources\\player\\playerWalk1.png"), 2.5)
+        self.rect = self.surface.get_rect(center= (500, 300))
         self.counter = 0
+        self.frame_counter = 0
         self.facing_direction = "right"
         self.health = 100
+        self.movement_speed = 4
 
     def playerInput(self):
         keys_pressed = pygame.key.get_pressed()
         if not self.rect.x < 0 or not self.rect.x > 1000:  # Player Input
             if keys_pressed[pygame.K_d]:
                 if self.rect.right < screen.get_width() - 10:
-                    self.surface = pygame.transform.scale_by(pygame.image.load(self.imagesL[self.counter]).convert_alpha(), 2.5)
-                    self.counter = (self.counter + 1) % len(self.imagesL)
                     self.facing_direction = "right"
-                    self.rect.x += 5
+                    self.animate('right')
+                    self.rect.x += self.movement_speed
             if keys_pressed[pygame.K_a]:
                 if self.rect.left > 10:
-                    self.surface = pygame.transform.scale_by(pygame.image.load(self.imagesR[self.counter]).convert_alpha(), 2.5)
-                    self.counter = (self.counter + 1) % len(self.imagesR)
                     self.facing_direction = "left"
-                    self.rect.x += -5
+                    self.animate('left')
+                    self.rect.x += -self.movement_speed
             if keys_pressed[pygame.K_w]:
                 if self.rect.top > 10:
-                    if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
-                        self.surface = pygame.transform.scale_by(
-                            pygame.image.load(self.imagesR[self.counter]).convert_alpha(), 2.5)
-                        self.counter = (self.counter + 1) % len(self.imagesR)
-                    elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
-                        self.surface = pygame.transform.scale_by(
-                            pygame.image.load(self.imagesL[self.counter]).convert_alpha(), 2.5)
-                        self.counter = (self.counter + 1) % len(self.imagesL)
-                    self.rect.y += -5
+                    self.animate('up')
+                    self.rect.y += -self.movement_speed
             if keys_pressed[pygame.K_s]:
                 if self.rect.bottom < screen.get_height() - 10:
-                    if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
-                        self.surface = pygame.transform.scale_by(
-                            pygame.image.load(self.imagesR[self.counter]).convert_alpha(), 2.5)
-                        self.counter = (self.counter + 1) % len(self.imagesR)
-                    elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
-                        self.surface = pygame.transform.scale_by(
-                            pygame.image.load(self.imagesL[self.counter]).convert_alpha(), 2.5)
-                        self.counter = (self.counter + 1) % len(self.imagesR)
-                    self.rect.y += 5
+                    self.animate('down')
+                    self.rect.y += self.movement_speed
+
+    def animate(self, direction):
+        keys_pressed = pygame.key.get_pressed()
+        if self.frame_counter == 5:
+            if direction == 'right':
+                self.surface = self.imagesL[self.counter]
+                self.counter = (self.counter + 1) % len(self.imagesL)
+            elif direction == 'left':
+                self.surface = self.imagesR[self.counter]
+                self.counter = (self.counter + 1) % len(self.imagesR)
+            elif direction == 'up' or direction == 'down':
+                if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                    self.surface = self.imagesR[self.counter]
+                    self.counter = (self.counter + 1) % len(self.imagesR)
+                elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                    self.surface = self.imagesL[self.counter]
+                    self.counter = (self.counter + 1) % len(self.imagesL)
+            self.frame_counter = 0
+        else:
+            if direction == 'right':
+                self.surface = self.imagesL[self.counter]
+            elif direction == 'left':
+                self.surface = self.imagesR[self.counter]
+            elif direction == 'up' or direction == 'down':
+                if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                    self.surface = self.imagesR[self.counter]
+                elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                    self.surface = self.imagesL[self.counter]
+        self.frame_counter += 1
 
     def draw(self):
         screen.blit(self.surface, self.rect)
@@ -133,6 +164,35 @@ class Druif:
         self.drawDruif()
 
 
+class Zeus:
+    def __init__(self):
+        self.zeus_sprite = pygame.transform.scale_by(pygame.image.load(".\\Resources\\zeus.png").convert_alpha(), 0.35)
+        self.cloud_sprite = pygame.transform.scale_by(pygame.image.load("Resources/cloud.png").convert_alpha(), 0.35)
+        self.zeus_rect = self.zeus_sprite.get_rect()
+        self.cloud_rect = self.cloud_sprite.get_rect()
+        self.zeus_rect.center = ((screen.get_width() / 2) - 25, 100)
+        self.cloud_rect.center = (465, 150)
+        self.cloud_anim_side = 1
+        self.counter = 0
+
+    def draw(self):
+        screen.blit(self.zeus_sprite, self.zeus_rect)
+        if self.counter == 6:
+            self.cloud_rect.centerx += self.cloud_anim_side
+            screen.blit(self.cloud_sprite, self.cloud_rect)
+            self.counter = 0
+        else:
+            screen.blit(self.cloud_sprite, self.cloud_rect)
+        self.counter += 1
+
+    def update(self):
+        if self.cloud_rect.centerx == 470:
+            self.cloud_anim_side = -1
+        elif self.cloud_rect.centerx == 460:
+            self.cloud_anim_side = 1
+        self.draw()
+
+
 class Attack_1:
     pass
 
@@ -148,12 +208,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
 # Zeus
-zeus_sprite = pygame.transform.scale_by(pygame.image.load(".\\Resources\\zeus.png"), 0.35)
-zeus_cloud_sprite = pygame.transform.scale_by(pygame.image.load("Resources/cloud.png"), 0.35)
-zeus = zeus_sprite.get_rect()
-zeus_cloud = zeus_cloud_sprite.get_rect()
-zeus.center = ((screen.get_width() / 2) - 25, 100)
-zeus_cloud.center = (465, 150)
+zeus = Zeus()
 
 # Player
 player = Player()
@@ -196,14 +251,14 @@ def start_screen():
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 
+
 def draw_hp(hearts_left):
     if hearts_left >= 1:
         pass
 
 
-
 def main():
-    hp = 5
+    hp = 5 # de player class heeft zelf al een variable health: player.health :)
     counter = 0
     score = 0
     druifDict = {}
@@ -221,8 +276,7 @@ def main():
                 druifDict[i] = Druif(i)
                 score += 1
         player.update()
-        screen.blit(zeus_sprite, zeus)
-        screen.blit(zeus_cloud_sprite, zeus_cloud)
+        zeus.update()
         screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)

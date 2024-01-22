@@ -146,6 +146,7 @@ def main():
         if ticks % 300 == 0:
             player.health -= 1
             print('min health')
+            print(player.health)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()

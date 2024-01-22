@@ -19,7 +19,7 @@ class Player:
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"
-        self.health = 100
+        self.health = 5
         self.movement_speed = 4
 
     def playerInput(self):

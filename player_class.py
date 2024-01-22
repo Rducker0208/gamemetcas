@@ -36,12 +36,14 @@ class Player:
     def playerInput(self):
         keys_pressed = pygame.key.get_pressed()
         if not self.rect.x < 0 or not self.rect.x > 1000:  # Player Input
-            if keys_pressed[pygame.K_d]:
+            if keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_a]:
                 if self.rect.right < self.screen.get_width() - 10:
+                    print("right")
                     self.facing_direction = "right"
                     self.animate('right')
                     self.rect.x += self.movement_speed
-            if keys_pressed[pygame.K_a]:
+            elif keys_pressed[pygame.K_a]:
+                print("left")
                 if self.rect.left > 10:
                     self.facing_direction = "left"
                     self.animate('left')

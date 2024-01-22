@@ -1,5 +1,6 @@
 import random
 import pygame
+import os
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -8,38 +9,18 @@ SCREEN_SIZE = (1000, 600)
 # player
 class Player:
     def __init__(self):
-        self.imagesR = [pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk1.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk2.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk3.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk4.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk5.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk6.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk7.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalk8.png").convert_alpha(), 2.5)]
-        self.imagesL = [pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL1.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL2.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL3.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL4.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL5.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL6.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL7.png").convert_alpha(), 2.5),
-                        pygame.transform.scale_by(pygame.image.load
-                                                  (".\\Resources\\player\\playerWalkL8.png").convert_alpha(), 2.5)]
+        self.imagesL = []
+        self.imagesR = []
+        self.directory = ".\\Resources\\player"
+        for file in os.listdir(self.directory):
+            filename = os.fsdecode(file)
+            if filename.endswith("L.png"):
+                self.imagesL.append(pygame.transform.scale_by(pygame.image.load(f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
+                continue
+            else:
+                self.imagesR.append(pygame.transform.scale_by(pygame.image.load(f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
+                continue
+
         self.surface = pygame.transform.scale_by(pygame.image.load(".\\Resources\\player\\playerWalk1.png"), 2.5)
         self.rect = self.surface.get_rect(center= (500, 300))
         self.counter = 0

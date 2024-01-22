@@ -148,58 +148,85 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
 # Zeus
-zeus = pygame.Rect((screen.get_width() / 2), 50, 50, 50)
-zeus.x -= zeus.width / 2
+zeus_sprite = pygame.transform.scale_by(pygame.image.load(".\\Resources\\zeus.png"), 0.35)
+zeus_cloud_sprite = pygame.transform.scale_by(pygame.image.load("Resources/cloud.png"), 0.35)
+zeus = zeus_sprite.get_rect()
+zeus_cloud = zeus_cloud_sprite.get_rect()
+zeus.center = ((screen.get_width() / 2) - 25, 100)
+zeus_cloud.center = (465, 150)
 
 # Player
 player = Player()
 
 # bg
 bg_intro = pygame.transform.scale_by(pygame.image.load(".\\Resources\\temple_bg.png").convert(), 1.1)
-bg_intro_rect = bg_intro.get_rect(center= (500, 300))
+bg_intro_rect = bg_intro.get_rect(center=(500, 300))
 bg_surface = pygame.image.load("Resources\\Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
 # text
-# arial_font = pygame.font.SysFont('Arial', 50)
+# // coole font website: https://textcraft.net/
 font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
-def main():
-    game_active = False
+def start_screen():
+    ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/ricasius_text.png"), 1.25)
+    ricasius_rect = ricasius_text.get_rect()
+    ricasius_rect.center = (500, 100)
+
+    battle_text = pygame.transform.scale_by(pygame.image.load("Resources/battle_text.png"), 0.5)
+    battle_rect = battle_text.get_rect()
+    battle_rect.center = (490, 175)
+
+    press_space_text = pygame.transform.scale_by(pygame.image.load("Resources/press_space.png"), 0.75)
+    press_space_rect = press_space_text.get_rect()
+    press_space_rect.center = (500, 500)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    game_active = True
+                    main()
         screen.blit(bg_intro, bg_intro_rect)
-        if game_active:
-            counter = 0
-            score = 0
-            druifDict = {}
-            while counter < 3:
-                druifDict[counter] = Druif(counter)
-                counter += 1
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        quit()
-                screen.blit(bg_surface, bg_rect)
-                for i, druif in druifDict.items():
-                    druif.update()
-                    if druif.collision():
-                        druifDict[i] = Druif(i)
-                        score += 1
-                player.update()
-                screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
-                pygame.draw.rect(screen, RED, zeus)
-                pygame.display.update()
-                clock.tick(MAX_FRAMERATE)
+        screen.blit(ricasius_text, ricasius_rect)
+        screen.blit(battle_text, battle_rect)
+        screen.blit(press_space_text, press_space_rect)
+        pygame.display.update()
+        clock.tick(MAX_FRAMERATE)
+
+def draw_hp(hearts_left):
+    if hearts_left >= 1:
+        pass
+
+
+
+def main():
+    hp = 5
+    counter = 0
+    score = 0
+    druifDict = {}
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+        while counter < 3:
+            druifDict[counter] = Druif(counter)
+            counter += 1
+        screen.blit(bg_surface, bg_rect)
+        for i, druif in druifDict.items():
+            druif.update()
+            if druif.collision():
+                druifDict[i] = Druif(i)
+                score += 1
+        player.update()
+        screen.blit(zeus_sprite, zeus)
+        screen.blit(zeus_cloud_sprite, zeus_cloud)
+        screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 
 
 if __name__ == "__main__":
-    main()
+    start_screen()

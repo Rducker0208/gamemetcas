@@ -87,10 +87,10 @@ def main():
             druifDict[counter] = Druif(counter, screen, player)
             counter += 1
         screen.blit(bg_surface, bg_rect)
-        for i, druif in druifDict.items():
+        for druif_id, druif in druifDict.items():
             druif.update()
             if druif.collision():
-                druifDict[i] = Druif(i, screen, player)
+                druifDict[druif_id] = Druif(druif_id, screen, player)
                 score += 1
         player.update()
         zeus.update()

@@ -35,17 +35,17 @@ font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
 def start_screen():
-    ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/text/ricasius_text.png"), 1.25)
+    ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/text/Ricasius.png"), 1.25)
     ricasius_rect = ricasius_text.get_rect()
     ricasius_rect.center = (500, 100)
 
-    battle_text = pygame.transform.scale_by(pygame.image.load("Resources/text/battle_text.png"), 0.5)
+    battle_text = pygame.transform.scale_by(pygame.image.load("Resources/text/battle-with-zeus.png"), 1)
     battle_rect = battle_text.get_rect()
-    battle_rect.center = (490, 175)
+    battle_rect.center = (500, 185)
 
-    press_space_text = pygame.transform.scale_by(pygame.image.load("Resources/text/press_space.png"), 0.75)
+    press_space_text = pygame.transform.scale_by(pygame.image.load("Resources/text/press-space-to-start.png"), 0.75)
     press_space_rect = press_space_text.get_rect()
-    press_space_rect.center = (500, 500)
+    press_space_rect.center = (500, 550)
 
     while True:
         for event in pygame.event.get():

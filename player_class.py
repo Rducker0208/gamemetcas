@@ -55,7 +55,7 @@ class Player:
                     self.animate('down')
                     self.rect.y += self.movement_speed
             if not keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_a] and not \
-            keys_pressed[pygame.K_d]:
+                    keys_pressed[pygame.K_d]:
                 self.animate(None)
 
     def animate(self, direction):
@@ -89,6 +89,5 @@ class Player:
         self.screen.blit(self.surface, self.rect)
 
     def update(self):
-        if self.counter > len(self.walkR): self.counter = 0
         self.playerInput()
         self.draw()

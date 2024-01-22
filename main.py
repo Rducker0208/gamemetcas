@@ -41,7 +41,7 @@ class Player:
                         pygame.transform.scale_by(pygame.image.load
                                                   (".\\Resources\\player\\playerWalkL8.png").convert_alpha(), 2.5)]
         self.surface = pygame.transform.scale_by(pygame.image.load(".\\Resources\\player\\playerWalk1.png"), 2.5)
-        self.rect = self.surface.get_rect()
+        self.rect = self.surface.get_rect(center= (500, 300))
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"

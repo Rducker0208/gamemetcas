@@ -4,8 +4,8 @@ import pygame
 class Zeus:
     def __init__(self, screen):
         self.screen = screen
-        self.zeus_sprite = pygame.transform.scale_by(pygame.image.load(".\\Resources\\zeus.png").convert_alpha(), 0.35)
-        self.cloud_sprite = pygame.transform.scale_by(pygame.image.load("Resources/cloud.png").convert_alpha(), 0.35)
+        self.zeus_sprite = pygame.transform.scale_by(pygame.image.load("Resources/zeus/zeus.png").convert_alpha(), 0.35)
+        self.cloud_sprite = pygame.transform.scale_by(pygame.image.load("Resources/zeus/cloud.png").convert_alpha(), 0.35)
         self.zeus_rect = self.zeus_sprite.get_rect()
         self.cloud_rect = self.cloud_sprite.get_rect()
         self.zeus_rect.center = ((self.screen.get_width() / 2) - 25, 100)

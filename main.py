@@ -24,9 +24,9 @@ zeus = Zeus(screen)
 player = Player(screen)
 
 # bg
-bg_intro = pygame.transform.scale_by(pygame.image.load(".\\Resources\\temple_bg.png").convert(), 1.1)
+bg_intro = pygame.transform.scale_by(pygame.image.load("Resources/background/temple_bg.png").convert(), 1.1)
 bg_intro_rect = bg_intro.get_rect(center=(500, 300))
-bg_surface = pygame.image.load("Resources\\Naamloos.png").convert()
+bg_surface = pygame.image.load("Resources/background/Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
 # text
@@ -35,15 +35,15 @@ font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
 def start_screen():
-    ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/ricasius_text.png"), 1.25)
+    ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/text/ricasius_text.png"), 1.25)
     ricasius_rect = ricasius_text.get_rect()
     ricasius_rect.center = (500, 100)
 
-    battle_text = pygame.transform.scale_by(pygame.image.load("Resources/battle_text.png"), 0.5)
+    battle_text = pygame.transform.scale_by(pygame.image.load("Resources/text/battle_text.png"), 0.5)
     battle_rect = battle_text.get_rect()
     battle_rect.center = (490, 175)
 
-    press_space_text = pygame.transform.scale_by(pygame.image.load("Resources/press_space.png"), 0.75)
+    press_space_text = pygame.transform.scale_by(pygame.image.load("Resources/text/press_space.png"), 0.75)
     press_space_rect = press_space_text.get_rect()
     press_space_rect.center = (500, 500)
 

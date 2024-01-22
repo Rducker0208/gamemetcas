@@ -1,6 +1,5 @@
 import pygame
 
-import druif_class
 from zeus_class import Zeus
 from player_class import Player
 from druif_class import Druif

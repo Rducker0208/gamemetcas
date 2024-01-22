@@ -9,7 +9,7 @@ class Druif:
         self.player = player
         self.angle = 0
         self.rot = random.choice((-2, 2))
-        self.image = pygame.transform.rotozoom(pygame.image.load(".\\Resources\\grape.png").convert_alpha(), 0, .5)
+        self.image = pygame.transform.rotozoom(pygame.image.load("Resources/grape.png").convert_alpha(), 0, .5)
         self.rect = self.image.get_rect()
         spawn_zone = None
         spawn_location = random.randint(1, 20)

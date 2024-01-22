@@ -4,9 +4,9 @@ import pygame
 class hearts:
     def __init__(self, screen):
         self.screen = screen
-        self.empty_heart = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\background.png"), 3)
-        self.heart_border = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\border.png"), 3)
-        self.heart = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\heart.png"), 3)
+        self.empty_heart = pygame.transform.scale_by(pygame.image.load("Resources/hearts/background.png"), 3)
+        self.heart_border = pygame.transform.scale_by(pygame.image.load("Resources/hearts/border.png"), 3)
+        self.heart = pygame.transform.scale_by(pygame.image.load("Resources/hearts/heart.png"), 3)
 
         self.empty_heart_rect_1 = self.empty_heart.get_rect()
         self.empty_heart_rect_2 = self.empty_heart.get_rect()

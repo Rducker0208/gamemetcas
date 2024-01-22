@@ -63,23 +63,89 @@ def start_screen():
 
 
 def draw_hp(hearts_left):
+    empty_heart = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\background.png"), 3)
+    heart_border = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\border.png"), 3)
+    heart = pygame.transform.scale_by(pygame.image.load("Resources\\hearts\\heart.png"), 3)
+
+    empty_heart_rect_1 = empty_heart.get_rect()
+    empty_heart_rect_2 = empty_heart.get_rect()
+    empty_heart_rect_3 = empty_heart.get_rect()
+    empty_heart_rect_4 = empty_heart.get_rect()
+    empty_heart_rect_5 = empty_heart.get_rect()
+
+    heart_border_1 = heart_border.get_rect()
+    heart_border_2 = heart_border.get_rect()
+    heart_border_3 = heart_border.get_rect()
+    heart_border_4 = heart_border.get_rect()
+    heart_border_5 = heart_border.get_rect()
+
+    heart_1 = heart.get_rect()
+    heart_2 = heart.get_rect()
+    heart_3 = heart.get_rect()
+    heart_4 = heart.get_rect()
+    heart_5 = heart.get_rect()
+
+    heart_border_1.center = (30, 40)
+    screen.blit(heart_border, heart_border_1)
+
+    heart_border_2.center = (80, 40)
+    screen.blit(heart_border, heart_border_2)
+
+    heart_border_3.center = (130, 40)
+    screen.blit(heart_border, heart_border_3)
+
+    heart_border_4.center = (180, 40)
+    screen.blit(heart_border, heart_border_4)
+
+    heart_border_5.center = (230, 40)
+    screen.blit(heart_border, heart_border_5)
+
     if hearts_left >= 1:
-        pass
+        heart_1.center = (30, 40)
+        screen.blit(heart, heart_1)
+    else:
+        empty_heart_rect_1.center = (30, 40)
+        screen.blit(empty_heart, empty_heart_rect_1)
+
     if hearts_left >= 2:
-        pass
+        heart_2.center = (80, 40)
+        screen.blit(heart, heart_2)
+    else:
+        empty_heart_rect_2.center = (80, 40)
+        screen.blit(empty_heart, empty_heart_rect_2)
+
     if hearts_left >= 3:
-        pass
+        heart_3.center = (130, 40)
+        screen.blit(heart, heart_3)
+    else:
+        empty_heart_rect_3.center = (130, 40)
+        screen.blit(empty_heart, empty_heart_rect_3)
+
     if hearts_left >= 4:
-        pass
+        heart_4.center = (180, 40)
+        screen.blit(heart, heart_4)
+    else:
+        empty_heart_rect_4.center = (180, 40)
+        screen.blit(empty_heart, empty_heart_rect_4)
+
     if hearts_left >= 5:
-        pass
+        heart_5.center = (230, 40)
+        screen.blit(heart, heart_5)
+    else:
+        empty_heart_rect_5.center = (230, 40)
+        screen.blit(empty_heart, empty_heart_rect_5)
 
 
 def main():
     counter = 0
     score = 0
+    ticks = 0
     druifDict = {}
     while True:
+        ticks += 1
+        if ticks % 300 == 0:
+            player.health -= 1
+            print('min health')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -94,6 +160,7 @@ def main():
                 score += 1
         player.update()
         zeus.update()
+        draw_hp(player.health)
         screen.blit(font.render(f'Score: {score}', True, (0, 0, 0)), (25, screen.get_height() - 50))
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)

@@ -9,16 +9,13 @@ class Player:
         self.imagesR = []
         self.directory = ".\\Resources\\player"
         for file in os.listdir(self.directory):
-            filename = os.fsdecode(file)
-            if filename.endswith("L.png"):
-                self.imagesL.append(pygame.transform.scale_by(pygame.image.load(f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
-                continue
-            else:
-                self.imagesR.append(pygame.transform.scale_by(pygame.image.load(f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
-                continue
-
+            self.imagesR.append(pygame.transform.scale_by(pygame.image.load
+                                                          (f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
+            self.imagesL.append(pygame.transform.scale_by(pygame.transform.flip(pygame.image.load
+                                                                                (f".\\Resources\\player\\{file}").convert_alpha(),
+                                                                                True, False), 2.5))
         self.surface = pygame.transform.scale_by(pygame.image.load(".\\Resources\\player\\playerWalk1.png"), 2.5)
-        self.rect = self.surface.get_rect(center= (500, 300))
+        self.rect = self.surface.get_rect(center=(500, 300))
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"

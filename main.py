@@ -35,6 +35,7 @@ font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 
 def start_screen():
+    player.health = 5
     ricasius_text = pygame.transform.scale_by(pygame.image.load("Resources/text/Ricasius.png"), 1.25)
     ricasius_rect = ricasius_text.get_rect()
     ricasius_rect.center = (500, 100)
@@ -158,7 +159,12 @@ def main():
             druif.update()
             if druif.collision():
                 druifDict[druif_id] = Druif(druif_id, screen, player)
+                if player.health < 5:
+                    player.health += 1
                 score += 1
+        if player.health <= 0:
+            start_screen()
+            break
         player.update()
         zeus.update()
         draw_hp(player.health)

@@ -14,22 +14,24 @@ class Druif:
         spawn_zone = None
         spawn_location = random.randint(1, 20)
 
+        # zeus_cords = ((388, 13), (562, 13), (475, 188))
+
         # // onder zeus
-        if 15 > spawn_location > 5:
+        if 15 > spawn_location > 3:
             self.x = random.randint(25, screen.get_width() - 25)
-            self.y = random.randint(100, screen.get_height() - 25)
+            self.y = random.randint(288, screen.get_height() - 25)
             spawn_zone = 1
 
         # // links van zeus
-        elif spawn_location <= 5:
-            self.x = random.randint(25, 200)
-            self.y = random.randint(25, 100)
+        elif spawn_location <= 3:
+            self.x = random.randint(25, 338)
+            self.y = random.randint(85, 100)
             spawn_zone = 2
 
         # // rechts van zeus
         elif spawn_location >= 15:
-            self.x = random.randint(screen.get_width() - 200, screen.get_width() - 25)
-            self.y = random.randint(25, 100)
+            self.x = random.randint(612, screen.get_width() - 25)
+            self.y = random.randint(50, 100)
             spawn_zone = 3
 
         print(f"Druif {self.id}, coörds: {(self.x, self.y)}, spawn zone: {spawn_zone}")

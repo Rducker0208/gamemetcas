@@ -4,6 +4,7 @@ from zeus_class import Zeus
 from player_class import Player
 from druif_class import Druif
 from hearts_class import hearts
+from attack_classes import Attack_1
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -24,6 +25,7 @@ font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 # Zeus
 zeus = Zeus(screen)
+attack_1 = Attack_1(screen, 1)
 
 # Player
 player = Player(screen)
@@ -90,15 +92,21 @@ def main():
     score = 0
     ticks = 0
     druifDict = {}
+    grid_toggled = False
     while True:
         ticks += 1
-
         # // test die elke 5 sec triggered
         # if ticks % 300 == 0:
         #     player.health -= 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_g:
+                    if grid_toggled:
+                        grid_toggled = False
+                    else:
+                        grid_toggled = True
 
         screen.blit(bg_surface, bg_rect)
         update_score(score)
@@ -118,6 +126,8 @@ def main():
 
         if player.health <= 0:
             return start_screen()
+        if grid_toggled:
+            attack_1.update()
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

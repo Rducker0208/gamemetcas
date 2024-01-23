@@ -27,8 +27,6 @@ class Player:
                                                                                   True, False), 2.5))
         self.surface = pygame.transform.scale_by(pygame.image.load("Resources/player/playerWalk1.png"), 2.5)
         self.rect = self.surface.get_rect(midbottom=(500, 300), width= self.surface.get_width() - 25, height= self.surface.get_height() - 25)
-        # self.rect.width = self.rect.width - 25
-        # self.rect.height = self.rect.height - 25
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"

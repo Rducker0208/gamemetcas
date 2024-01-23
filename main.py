@@ -92,15 +92,21 @@ def main():
     score = 0
     ticks = 0
     druifDict = {}
+    grid_toggled = False
     while True:
         ticks += 1
-
         # // test die elke 5 sec triggered
         # if ticks % 300 == 0:
         #     player.health -= 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_g:
+                    if grid_toggled:
+                        grid_toggled = False
+                    else:
+                        grid_toggled = True
 
         screen.blit(bg_surface, bg_rect)
         update_score(score)
@@ -120,8 +126,8 @@ def main():
 
         if player.health <= 0:
             return start_screen()
-
-        attack_1.update()
+        if grid_toggled:
+            attack_1.update()
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

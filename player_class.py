@@ -26,7 +26,9 @@ class Player:
                                                                                   (f".\\Resources\\player\\{file}").convert_alpha(),
                                                                                   True, False), 2.5))
         self.surface = pygame.transform.scale_by(pygame.image.load("Resources/player/playerWalk1.png"), 2.5)
-        self.rect = self.surface.get_rect(midbottom=(500, 300))
+        self.rect = self.surface.get_rect(midbottom=(500, 300), width= self.surface.get_width() - 25, height= self.surface.get_height() - 25)
+        # self.rect.width = self.rect.width - 25
+        # self.rect.height = self.rect.height - 25
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"
@@ -38,16 +40,16 @@ class Player:
         if not self.rect.x < 0 or not self.rect.x > 1000:  # Player Input
             if keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_a]:
                 if self.rect.right < self.screen.get_width() - 10:
-                    print("right")
                     self.facing_direction = "right"
                     self.animate('right')
                     self.rect.x += self.movement_speed
-            elif keys_pressed[pygame.K_a]:
-                print("left")
+            elif keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
                 if self.rect.left > 10:
                     self.facing_direction = "left"
                     self.animate('left')
                     self.rect.x += -self.movement_speed
+            elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d]:
+                self.animate(None)
             if keys_pressed[pygame.K_w]:
                 if self.rect.top > 10:
                     self.animate('up')
@@ -77,10 +79,10 @@ class Player:
                     self.surface = self.walkL[self.counter]
                     self.counter = (self.counter + 1) % len(self.walkL)
             else:
-                if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                if self.facing_direction == "left":
                     self.surface = self.idleL[self.counter]
                     self.counter = (self.counter + 1) % len(self.idleL)
-                elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                else:
                     self.surface = self.idleR[self.counter]
                     self.counter = (self.counter + 1) % len(self.idleR)
 

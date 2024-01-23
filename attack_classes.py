@@ -1,5 +1,3 @@
-import time
-
 import pygame
 
 
@@ -30,6 +28,26 @@ class Attacks:
     def attack_1(self):
         attack_vakjes_horizontal = [(x, y) for y in range(5, 7) for x in range(20)]
         self.current_attack_area = attack_vakjes_horizontal
+
+    def attack_2(self):
+        attack_vakjes = [(x, y) for y in range(12) for x in range(8, 11)]
+        self.current_attack_area = attack_vakjes
+
+    def attack_3(self):
+        attack_vakjes = [(x, y) for y in range(5, 7) for x in range(0, 20)]
+        for x in range(8, 11):
+            for y in range(0, 12):
+                attack_vakjes.append((x, y))
+        self.current_attack_area = attack_vakjes
+
+    def attack_4(self):
+        attack_vakjes = [(x, y) for y in range(12) for x in range(10, 20)]
+        self.current_attack_area = attack_vakjes
+
+    def attack_5(self):
+        attack_vakjes = [(x, y) for y in range(12) for x in range(9)]
+        self.current_attack_area = attack_vakjes
+
 
     # // spawned de aanval en verzamelt locatie data
     def spawnattack(self):

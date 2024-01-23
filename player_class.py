@@ -46,16 +46,18 @@ class Player:
                     self.facing_direction = "left"
                     self.animate('left')
                     self.rect.x += -self.movement_speed
-            elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d]:
+            elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
                 self.animate(None)
-            if keys_pressed[pygame.K_w]:
+            if keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
                 if self.rect.top > 10:
                     self.animate('up')
                     self.rect.y += -self.movement_speed
-            if keys_pressed[pygame.K_s]:
+            if keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_w]:
                 if self.rect.bottom < self.screen.get_height() - 10:
                     self.animate('down')
                     self.rect.y += self.movement_speed
+            elif keys_pressed[pygame.K_w] and keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                self.animate(None)
             if not keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_a] and not \
                     keys_pressed[pygame.K_d]:
                 self.animate(None)
@@ -70,10 +72,10 @@ class Player:
                 self.surface = self.walkR[self.counter]
                 self.counter = (self.counter + 1) % len(self.walkR)
             elif direction == 'up' or direction == 'down':
-                if self.facing_direction == "left" and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                if self.facing_direction == "left":
                     self.surface = self.walkR[self.counter]
                     self.counter = (self.counter + 1) % len(self.walkR)
-                elif not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+                else:
                     self.surface = self.walkL[self.counter]
                     self.counter = (self.counter + 1) % len(self.walkL)
             else:

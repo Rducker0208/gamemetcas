@@ -88,17 +88,20 @@ def update_score(score):
 
 
 def main():
-    counter = 0
     score = 0
     ticks = 0
     druifDict = {}
     grid_toggled = False
     attack_on_field = False
     damage_immunity = False
+    attacks_list = [attacks.attack_1, attacks.attack_2, attacks.attack_3, attacks.attack_4, attacks.attack_5]
+    attack_counter = 0
+
+    for i in range(3):
+        druifDict[i] = Druif(i, screen, player)
 
     while True:
         ticks += 1
-
         if player.health <= 0:
             return start_screen()
 
@@ -106,7 +109,15 @@ def main():
         if ticks % 300 == 0:
             if attack_on_field is False:
                 attack_on_field = True
-                attacks.attack_1()
+                if attack_counter == len(attacks_list) - 1:
+                    current_attack = attacks_list[attack_counter]
+                    current_attack()
+                    attack_counter = 0
+                else:
+                    current_attack = attacks_list[attack_counter]
+                    attack_counter += 1
+                    current_attack()
+
                 attacks.spawnattack()
             else:
                 attack_on_field = False
@@ -124,20 +135,14 @@ def main():
                         grid_toggled = True
 
         screen.blit(bg_surface, bg_rect)
-        update_score(score)
-        player.update()
-        zeus.update()
-        heart_bar.update_hearts(player.health)
-
-        while counter < 3:
-            druifDict[counter] = Druif(counter, screen, player)
-            counter += 1
 
         for druif_id, druif in druifDict.items():
             druif.update()
             if druif.collision():
                 druifDict[druif_id] = Druif(druif_id, screen, player)
                 score += 1
+                if player.health < 5:
+                    player.health += 1
 
         if grid_toggled:
             attacks.update()
@@ -148,6 +153,11 @@ def main():
                 if attacks.check_damage() == 1:
                     damage_immunity = True
                     player.health -= 1
+
+        player.update()
+        update_score(score)
+        zeus.update()
+        heart_bar.update_hearts(player.health)
 
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)

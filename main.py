@@ -4,7 +4,7 @@ from zeus_class import Zeus
 from player_class import Player
 from druif_class import Druif
 from hearts_class import hearts
-from attack_classes import Attack_1
+from attack_classes import Attacks
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -23,12 +23,13 @@ GREEN = (0, 255, 0)
 # // coole font website: https://textcraft.net/
 font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
-# Zeus
-zeus = Zeus(screen)
-attack_1 = Attack_1(screen, 1)
-
 # Player
 player = Player(screen)
+
+# Zeus
+zeus = Zeus(screen)
+attacks = Attacks(screen, 1, player.rect)
+
 
 # hearts
 heart_bar = hearts(screen)
@@ -86,18 +87,32 @@ def update_score(score):
         screen.blit(font.render(str(score), True, (0, 0, 0)), (screen.get_width() - 160, 20))
 
 
-
 def main():
     counter = 0
     score = 0
     ticks = 0
     druifDict = {}
     grid_toggled = False
+    attack_on_field = False
+    damage_immunity = False
+
     while True:
         ticks += 1
-        # // test die elke 5 sec triggered
-        # if ticks % 300 == 0:
-        #     player.health -= 1
+
+        if player.health <= 0:
+            return start_screen()
+
+        # // elke 5 seconden wordt er een aanval gestart of gestopt
+        if ticks % 300 == 0:
+            if attack_on_field is False:
+                attack_on_field = True
+                attacks.attack_1()
+                attacks.spawnattack()
+            else:
+                attack_on_field = False
+                damage_immunity = False
+                attacks.remove_attack()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -124,10 +139,16 @@ def main():
                 druifDict[druif_id] = Druif(druif_id, screen, player)
                 score += 1
 
-        if player.health <= 0:
-            return start_screen()
         if grid_toggled:
-            attack_1.update()
+            attacks.update()
+
+        if attack_on_field is True:
+            attacks.draw_attack()
+            if damage_immunity is False:
+                if attacks.check_damage() == 1:
+                    damage_immunity = True
+                    player.health -= 1
+
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

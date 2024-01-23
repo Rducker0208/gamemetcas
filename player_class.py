@@ -26,7 +26,8 @@ class Player:
                                                                                   (f".\\Resources\\player\\{file}").convert_alpha(),
                                                                                   True, False), 2.5))
         self.surface = pygame.transform.scale_by(pygame.image.load("Resources/player/playerWalk1.png"), 2.5)
-        self.rect = self.surface.get_rect(midbottom=(500, 300), width= self.surface.get_width() - 25, height= self.surface.get_height() - 25)
+        self.rect = self.surface.get_rect(width= self.surface.get_width() - 25, height= self.surface.get_height() - 25)
+        self.rect.midbottom = (500, 300)
         self.counter = 0
         self.frame_counter = 0
         self.facing_direction = "right"
@@ -47,7 +48,7 @@ class Player:
                     self.animate('left')
                     self.rect.x += -self.movement_speed
             elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
-                self.animate(None)
+                self.animate('idle')
             if keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
                 if self.rect.top > 10:
                     self.animate('up')
@@ -57,10 +58,10 @@ class Player:
                     self.animate('down')
                     self.rect.y += self.movement_speed
             elif keys_pressed[pygame.K_w] and keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
-                self.animate(None)
+                self.animate('idle')
             if not keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_a] and not \
                     keys_pressed[pygame.K_d]:
-                self.animate(None)
+                self.animate('idle')
 
     def animate(self, direction):
         keys_pressed = pygame.key.get_pressed()
@@ -78,7 +79,7 @@ class Player:
                 else:
                     self.surface = self.walkL[self.counter]
                     self.counter = (self.counter + 1) % len(self.walkL)
-            else:
+            elif direction == 'idle':
                 if self.facing_direction == "left":
                     self.surface = self.idleL[self.counter]
                     self.counter = (self.counter + 1) % len(self.idleL)

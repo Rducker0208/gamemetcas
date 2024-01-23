@@ -4,6 +4,7 @@ from zeus_class import Zeus
 from player_class import Player
 from druif_class import Druif
 from hearts_class import hearts
+from attack_classes import Attack_1
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -24,6 +25,7 @@ font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
 
 # Zeus
 zeus = Zeus(screen)
+attack_1 = Attack_1(screen, 1)
 
 # Player
 player = Player(screen)
@@ -118,6 +120,8 @@ def main():
 
         if player.health <= 0:
             return start_screen()
+
+        attack_1.update()
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

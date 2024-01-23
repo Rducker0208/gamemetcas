@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Attacks:
@@ -10,7 +11,7 @@ class Attacks:
         self.attack_id = attack_id
         self.player_rect = player_rect
 
-    def drawGrid(self, attack_area):
+    def drawGrid(self):
         # de grid zelf
         blockSize = 50  # Set the size of the grid block
         for x in range(0, self.screen.get_width(), blockSize):
@@ -30,27 +31,41 @@ class Attacks:
         self.current_attack_area = attack_vakjes_horizontal
 
     def attack_2(self):
-        attack_vakjes = [(x, y) for y in range(12) for x in range(8, 11)]
+        attack_vakjes = [(x, y) for y in range(4, 12) for x in range(8, 12)]
+        attack_vakjes.extend([(0, 11), (1, 10), (2, 9), (3, 8), (4, 7), (5, 6), (6, 5), (7, 4)])
+        attack_vakjes.extend([(12, 4), (13, 5), (14, 6), (15, 7), (16, 8), (17, 9), (18, 10), (19, 11)])
+        attack_vakjes.extend([(0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (6, 4)])
+        attack_vakjes.extend([(13, 4), (14, 4), (15, 4), (16, 4), (17, 4), (18, 4), (19, 4)])
+        attack_vakjes.extend([(7, 5), (12, 5)])
         self.current_attack_area = attack_vakjes
 
     def attack_3(self):
         attack_vakjes = [(x, y) for y in range(5, 7) for x in range(0, 20)]
-        for x in range(8, 11):
-            for y in range(0, 12):
-                attack_vakjes.append((x, y))
+        attack_vakjes.extend([(x, y) for x in range(8, 12) for y in range(4, 12)])
         self.current_attack_area = attack_vakjes
 
     def attack_4(self):
-        attack_vakjes = [(x, y) for y in range(12) for x in range(10, 20)]
+        attack_vakjes = [(x, y) for y in range(12) for x in range(11, 20)]
         self.current_attack_area = attack_vakjes
 
     def attack_5(self):
         attack_vakjes = [(x, y) for y in range(12) for x in range(9)]
         self.current_attack_area = attack_vakjes
 
-
     # // spawned de aanval en verzamelt locatie data
     def spawnattack(self):
+        location = random.randint(1, 60)
+        if 15 >= location >= 1:
+            self.attack_1()
+        if 30 >= location >= 16:
+            self.attack_2()
+        if 40 >= location >= 31:
+            self.attack_3()
+        if 50 >= location >= 41:
+            self.attack_4()
+        if 60 >= location >= 51:
+            self.attack_5()
+
         for location in self.current_attack_area:
             x_location = 50 + 50 * location[0]
             y_location = 50 + 50 * location[1]
@@ -68,11 +83,7 @@ class Attacks:
 
     # // check for collision
     def check_damage(self):
-        print('check')
-        if self.player_rect.collideobjects(self.circles):
-            return 1
-        else:
-            return 0
+        return len(self.player_rect.collideobjectsall(self.circles))
 
     # // teken rode cirkels op het scherm
     def draw_attack(self):
@@ -81,4 +92,4 @@ class Attacks:
             pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
 
     def update(self):
-        self.drawGrid(self.current_attack_area)
+        self.drawGrid()

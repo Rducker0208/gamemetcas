@@ -78,4 +78,3 @@ class hearts:
         else:
             self.empty_heart_rect_5.center = (230, 40)
             self.screen.blit(self.empty_heart, self.empty_heart_rect_5)
-

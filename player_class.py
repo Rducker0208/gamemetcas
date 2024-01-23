@@ -17,16 +17,16 @@ class Player:
                 self.walkL.append(pygame.transform.scale_by(pygame.image.load
                                                             (f".\\Resources\\player\\{file}").convert_alpha(), 2.5))
                 self.walkR.append(pygame.transform.scale_by(pygame.transform.flip(pygame.image.load
-                                                                                  (f".\\Resources\\player\\{file}").convert_alpha(),
+                                                                                  (f".\\Resources\\player\\{file}").convert_alpha(), # noqa
                                                                                   True, False), 2.5))
             elif filename.startswith("playerIdle"):
                 self.idleR.append(pygame.transform.scale_by(pygame.image.load
                                                             (f'.\\Resources\\player\\{file}').convert_alpha(), 2.5))
                 self.idleL.append(pygame.transform.scale_by(pygame.transform.flip(pygame.image.load
-                                                                                  (f".\\Resources\\player\\{file}").convert_alpha(),
+                                                                                  (f".\\Resources\\player\\{file}").convert_alpha(), # noqa
                                                                                   True, False), 2.5))
         self.surface = pygame.transform.scale_by(pygame.image.load("Resources/player/playerWalk1.png"), 2.5)
-        self.rect = self.surface.get_rect(width= self.surface.get_width() - 25, height= self.surface.get_height() - 25)
+        self.rect = self.surface.get_rect()
         self.rect.midbottom = (500, 300)
         self.counter = 0
         self.frame_counter = 0
@@ -47,7 +47,7 @@ class Player:
                     self.facing_direction = "left"
                     self.animate('left')
                     self.rect.x += -self.movement_speed
-            elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
+            elif keys_pressed[pygame.K_a] and keys_pressed[pygame.K_d] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]: # noqa
                 self.animate('idle')
             if keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_s]:
                 if self.rect.top > 10:
@@ -57,14 +57,13 @@ class Player:
                 if self.rect.bottom < self.screen.get_height() - 10:
                     self.animate('down')
                     self.rect.y += self.movement_speed
-            elif keys_pressed[pygame.K_w] and keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]:
+            elif keys_pressed[pygame.K_w] and keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_a] and not keys_pressed[pygame.K_d]: # noqa
                 self.animate('idle')
             if not keys_pressed[pygame.K_s] and not keys_pressed[pygame.K_w] and not keys_pressed[pygame.K_a] and not \
                     keys_pressed[pygame.K_d]:
                 self.animate('idle')
 
     def animate(self, direction):
-        keys_pressed = pygame.key.get_pressed()
         if self.frame_counter == 5:
             if direction == 'right':
                 self.surface = self.walkL[self.counter]

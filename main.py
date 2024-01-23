@@ -94,8 +94,6 @@ def main():
     grid_toggled = False
     attack_on_field = False
     damage_immunity = False
-    attacks_list = [attacks.attack_1, attacks.attack_2, attacks.attack_3, attacks.attack_4, attacks.attack_5]
-    attack_counter = 0
 
     for i in range(3):
         druifDict[i] = Druif(i, screen, player)
@@ -108,21 +106,12 @@ def main():
         # // elke 5 seconden wordt er een aanval gestart of gestopt
         if ticks % 300 == 0:
             if attack_on_field is False:
-                attack_on_field = True
-                if attack_counter == len(attacks_list) - 1:
-                    current_attack = attacks_list[attack_counter]
-                    current_attack()
-                    attack_counter = 0
-                else:
-                    current_attack = attacks_list[attack_counter]
-                    attack_counter += 1
-                    current_attack()
-
                 attacks.spawnattack()
-            else:
-                attack_on_field = False
-                damage_immunity = False
-                attacks.remove_attack()
+                attack_on_field = True
+            # else:
+            #     attack_on_field = False
+            #     damage_immunity = False
+            #     attacks.remove_attack()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -141,8 +130,8 @@ def main():
             if druif.collision():
                 druifDict[druif_id] = Druif(druif_id, screen, player)
                 score += 1
-                if player.health < 5:
-                    player.health += 1
+                # if player.health < 5:
+                #     player.health += 1
 
         if grid_toggled:
             attacks.update()
@@ -150,9 +139,10 @@ def main():
         if attack_on_field is True:
             attacks.draw_attack()
             if damage_immunity is False:
-                if attacks.check_damage() == 1:
+                damage_taken = attacks.check_damage()
+                if damage_taken > 0:
+                    player.health -= attacks.check_damage()
                     damage_immunity = True
-                    player.health -= 1
 
         player.update()
         update_score(score)

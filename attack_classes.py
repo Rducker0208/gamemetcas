@@ -87,7 +87,7 @@ class Attacks:
 
     # // check for collision
     def check_damage(self):
-        self.draw_attack(last= True)
+        self.draw_attack(last=True)
         if self.player_rect.collideobjectsall(self.circles):
             return 1
         else:

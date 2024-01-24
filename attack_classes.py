@@ -10,6 +10,8 @@ class Attacks:
         self.screen = screen
         self.attack_id = attack_id
         self.player_rect = player_rect
+        self.current_attack = None
+        self.color = 'green'
 
     def drawGrid(self):
         # de grid zelf
@@ -19,8 +21,6 @@ class Attacks:
                 rect = pygame.Rect(x, y, blockSize, blockSize)
                 pygame.draw.rect(self.screen, 'white', rect, 1)
 
-        # de rode blokjes
-        # attack_vakjes = [(5, 5), (6, 5), (7, 5), (8, 5), (9, 5), (10, 5), (11, 5), (12, 5)]
         for x, y in self.current_attack_area:
             rect = pygame.Rect(x * blockSize, y * blockSize, blockSize, blockSize)
             pygame.draw.rect(self.screen, 'red', rect)
@@ -55,21 +55,27 @@ class Attacks:
     # // spawned de aanval en verzamelt locatie data
     def spawnattack(self):
         location = random.randint(1, 60)
+        self.color = 'green'
         if 15 >= location >= 1:
+            self.current_attack = 1
             self.attack_1()
         if 30 >= location >= 16:
+            self.current_attack = 2
             self.attack_2()
         if 40 >= location >= 31:
+            self.current_attack = 3
             self.attack_3()
         if 50 >= location >= 41:
+            self.current_attack = 4
             self.attack_4()
         if 60 >= location >= 51:
+            self.current_attack = 5
             self.attack_5()
 
         for location in self.current_attack_area:
             x_location = 50 + 50 * location[0]
             y_location = 50 + 50 * location[1]
-            attack_circle = pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
+            attack_circle = pygame.draw.circle(self.screen, self.color, (x_location - 25, y_location - 25), 25)
             self.circles.append(attack_circle)
             self.circle_locs.append((x_location, y_location))
 
@@ -83,13 +89,15 @@ class Attacks:
 
     # // check for collision
     def check_damage(self):
-        return len(self.player_rect.collideobjectsall(self.circles))
+        self.color = 'red'
+        if self.player_rect.collideobjectsall(self.circles):
+            return 1
+        else:
+            return 0
+        # return len(self.player_rect.collideobjectsall(self.circles))
 
     # // teken rode cirkels op het scherm
     def draw_attack(self):
         for loc in self.circle_locs:
             x_location, y_location = loc
-            pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
-
-    def update(self):
-        self.drawGrid()
+            pygame.draw.circle(self.screen, self.color, (x_location - 25, y_location - 25), 25)

@@ -32,7 +32,6 @@ player = Player(screen)
 zeus = Zeus(screen)
 attacks = Attacks(screen, 1, player.rect)
 
-
 # hearts
 heart_bar = hearts(screen)
 
@@ -96,7 +95,6 @@ def main():
     druifDict = {}
     grid_toggled = False
     attack_on_field = False
-    damage_immunity = False
 
     for i in range(3):
         druifDict[i] = Druif(i, screen, player)
@@ -111,11 +109,6 @@ def main():
             if attack_on_field is False:
                 attacks.spawnattack()
                 attack_on_field = True
-            else:
-                attack_on_field = False
-                damage_immunity = False
-                attacks.remove_attack()
-                wait = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,7 +120,7 @@ def main():
                     else:
                         grid_toggled = True
 
-        screen.blit(bg_surface, bg_rect)
+        screen.blit (bg_surface, bg_rect)
 
         for druif_id, druif in druifDict.items():
             druif.update()
@@ -137,16 +130,15 @@ def main():
 
         if grid_toggled:
             attacks.drawGrid()
-
         if attack_on_field is True:
-            attacks.draw_attack()
-            if damage_immunity is False:
+            attacks.draw_attack(last= False)
+            if wait >= 120:
+                player.health -= attacks.check_damage()
+                attack_on_field = False
+                attacks.remove_attack()
+                wait = 0
+            else:
                 wait += 1
-                if wait >= 75:
-                    damage_taken = attacks.check_damage()
-                    if damage_taken > 0:
-                        player.health -= attacks.check_damage()
-                        damage_immunity = True
 
         player.update()
         update_score(score)

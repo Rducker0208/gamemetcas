@@ -1,3 +1,5 @@
+import time
+
 import pygame
 
 from zeus_class import Zeus
@@ -90,6 +92,7 @@ def update_score(score):
 def main():
     score = 0
     ticks = 0
+    wait = 0
     druifDict = {}
     grid_toggled = False
     attack_on_field = False
@@ -108,10 +111,11 @@ def main():
             if attack_on_field is False:
                 attacks.spawnattack()
                 attack_on_field = True
-            # else:
-            #     attack_on_field = False
-            #     damage_immunity = False
-            #     attacks.remove_attack()
+            else:
+                attack_on_field = False
+                damage_immunity = False
+                attacks.remove_attack()
+                wait = 0
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -130,19 +134,19 @@ def main():
             if druif.collision():
                 druifDict[druif_id] = Druif(druif_id, screen, player)
                 score += 1
-                # if player.health < 5:
-                #     player.health += 1
 
         if grid_toggled:
-            attacks.update()
+            attacks.drawGrid()
 
         if attack_on_field is True:
             attacks.draw_attack()
             if damage_immunity is False:
-                damage_taken = attacks.check_damage()
-                if damage_taken > 0:
-                    player.health -= attacks.check_damage()
-                    damage_immunity = True
+                wait += 1
+                if wait >= 75:
+                    damage_taken = attacks.check_damage()
+                    if damage_taken > 0:
+                        player.health -= attacks.check_damage()
+                        damage_immunity = True
 
         player.update()
         update_score(score)

@@ -26,9 +26,3 @@ class Vaas:
 
         print(f'Vaas at: ({x}, {y})')
         self.vaas_list.append((x, y))
-
-    def check_collision(self):
-        pass
-
-    def delete_vaas(self):
-        pass

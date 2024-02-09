@@ -1,3 +1,4 @@
+import time
 import pygame
 import os
 import random
@@ -11,11 +12,6 @@ class Attacks:
         self.screen = screen
         self.attack_id = attack_id
         self.player_rect = player_rect
-        self.thunder_sprites = []
-        for file in os.listdir(".\\Resources\\bliksem"):
-            filename = os.fsdecode(file)
-            if filename.startswith("lightning_line5b"):
-                self.thunder_sprites.append(pygame.image.load(f".\\Resources\\bliksem\\{file}").convert_alpha())
 
     def drawGrid(self):
         # de grid zelf
@@ -87,7 +83,7 @@ class Attacks:
 
     # // check for collision
     def check_damage(self):
-        self.draw_attack(last=True)
+        self.draw_attack()
         if self.player_rect.collideobjectsall(self.circles):
             return 1
         else:
@@ -95,18 +91,10 @@ class Attacks:
         # return len(self.player_rect.collideobjectsall(self.circles))
 
     # // teken rode cirkels op het scherm
-    def draw_attack(self, last: bool):
-        if not last:
-            for loc in self.circle_locs:
-                x_location, y_location = loc
-                pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
-        # else:
-        #     counter = 0
-        #     frame_counter = 0
-        #     if frame_counter == 5:
-        #         surface = self.thunder_sprites[counter]
-        #         counter = (counter + 1) % len(self.thunder_sprites)
-        #         self.screen.blit(surface, (500, 300))
-        #         frame_counter = 0
-        #     else:
-        #         frame_counter += 1
+    def draw_attack(self):
+        for loc in self.circle_locs:
+            x_location, y_location = loc
+            pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
+
+
+

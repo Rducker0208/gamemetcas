@@ -9,6 +9,7 @@ from druif_class import Druif
 from hearts_class import hearts
 from attack_classes import Attacks
 from loot_vaas_class import Vaas
+from thunder_class import thunder
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -50,13 +51,15 @@ voet_rect.center = (30, 100)
 # bg
 bg_intro = pygame.transform.scale_by(pygame.image.load("Resources/background/temple_bg.png").convert(), 1.1)
 bg_intro_rect = bg_intro.get_rect(center=(500, 300))
+
 bg_surface = pygame.image.load("Resources/background/Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
-
 # score
 score_druif_image = pygame.transform.scale_by(pygame.image.load("Resources/grape.png"), 0.60)
 score_druif_rect = score_druif_image.get_rect()
 score_druif_rect.center = (screen.get_width() - 40, 30)
+#thunder
+
 
 
 def start_screen():
@@ -117,6 +120,7 @@ def main():
     grid_toggled = False
     attack_on_field = False
     effect = False
+    thunder_sprite = None
 
     for i in range(3):
         druifDict[i] = Druif(i, screen, player)
@@ -182,14 +186,20 @@ def main():
             attacks.drawGrid()
 
         if attack_on_field is True:
-            attacks.draw_attack(last=False)
+            attacks.draw_attack()
             if wait >= 120:
                 player.health -= attacks.check_damage()
                 attack_on_field = False
+                thunder_sprite = thunder(screen, attacks.circle_locs)
                 attacks.remove_attack()
                 wait = 0
             else:
                 wait += 1
+        if thunder_sprite:
+            if not thunder_sprite.ended():
+                thunder_sprite.update()
+            else:
+                thunder_sprite = None
 
         player.update()
         update_score(score)

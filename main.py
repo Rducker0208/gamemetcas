@@ -15,6 +15,7 @@ MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
 
 pygame.init()
+pygame.mixer.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 pygame.display.set_caption("Ricky & Caas Productions")
@@ -54,12 +55,15 @@ bg_intro_rect = bg_intro.get_rect(center=(500, 300))
 
 bg_surface = pygame.image.load("Resources/background/Naamloos.png").convert()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
+
 # score
 score_druif_image = pygame.transform.scale_by(pygame.image.load("Resources/grape.png"), 0.60)
 score_druif_rect = score_druif_image.get_rect()
 score_druif_rect.center = (screen.get_width() - 40, 30)
-#thunder
 
+# thunder
+pygame.mixer.music.load('Resources/soundeffects/thunder-124463.mp3')
+pygame.mixer.music.set_volume(0.2)
 
 
 def start_screen():
@@ -102,6 +106,8 @@ def update_score(score):
     else:
         screen.blit(font.render(str(score), True, (0, 0, 0)), (screen.get_width() - 160, 20))
 
+def game_over_screen():
+    pass
 
 def update_effect(ticks_since_start):
     time_left = 600 - ticks_since_start
@@ -187,6 +193,7 @@ def main():
 
         if attack_on_field is True:
             attacks.draw_attack()
+            pygame.mixer.music.play()
             if wait >= 120:
                 player.health -= attacks.check_damage()
                 attack_on_field = False

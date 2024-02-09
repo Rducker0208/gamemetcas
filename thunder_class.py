@@ -22,7 +22,7 @@ class thunder:
             self.screen.blit(self.thunder_sprites[self.image_count], self.thunder_sprites[self.image_count].get_rect(
                 center=(self.location[self.rec_counter][0] + 55, self.location[self.rec_counter][1] - random.randint(90, 110))))
             self.rec_counter = (self.rec_counter + 1) % len(self.location)
-        if self.frame == 5:
+        if self.frame == 15:
             self.image_count += 1
             self.frame = 0
         self.frame += 1

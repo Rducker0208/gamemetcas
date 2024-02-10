@@ -28,13 +28,13 @@ GREEN = (0, 255, 0)
 # fonts
 # // coole font website: https://textcraft.net/
 font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
-
+alpha_surface = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA)
 # Player
 player = Player(screen)
 
 # Zeus
 zeus = Zeus(screen)
-attacks = Attacks(screen, 1, player.rect)
+attacks = Attacks(screen, alpha_surface, 1, player.rect)
 
 # hearts
 heart_bar = hearts(screen)
@@ -53,7 +53,7 @@ voet_rect.center = (30, 100)
 bg_intro = pygame.transform.scale_by(pygame.image.load("Resources/background/temple_bg.png").convert(), 1.1)
 bg_intro_rect = bg_intro.get_rect(center=(500, 300))
 
-bg_surface = pygame.image.load("Resources/background/Naamloos.png").convert()
+bg_surface = pygame.image.load("Resources/background/Naamloos.png").convert_alpha()
 bg_rect = bg_surface.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
 # score
@@ -62,8 +62,8 @@ score_druif_rect = score_druif_image.get_rect()
 score_druif_rect.center = (screen.get_width() - 40, 30)
 
 # thunder
-pygame.mixer.music.load('Resources/soundeffects/thunder-124463.mp3')
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.music.load('Resources/soundeffects/thunder_sfx.mp3')
+pygame.mixer.music.set_volume(.5)
 
 
 def start_screen():
@@ -106,8 +106,10 @@ def update_score(score):
     else:
         screen.blit(font.render(str(score), True, (0, 0, 0)), (screen.get_width() - 160, 20))
 
+
 def game_over_screen():
     pass
+
 
 def update_effect(ticks_since_start):
     time_left = 600 - ticks_since_start
@@ -138,7 +140,7 @@ def main():
             return start_screen()
 
         screen.blit(bg_surface, bg_rect)
-
+        screen.blit(alpha_surface, (0, 0))
         # // elke 5 seconden wordt er een aanval gestart of gestopt
         if ticks % 300 == 0:
             if attack_on_field is False:
@@ -173,7 +175,8 @@ def main():
 
         for vaas_loc in vaas.vaas_list:
             vaas_rect.center = (vaas_loc[0], vaas_loc[1])
-            if abs(player.rect.center[0] - vaas_rect.center[0]) < 25 and abs(player.rect.center[1] - vaas_rect.center[1]) < 50: # noqa
+            if abs(player.rect.center[0] - vaas_rect.center[0]) < 25 and abs(
+                    player.rect.center[1] - vaas_rect.center[1]) < 50:  # noqa
                 vaas.vaas_list.remove(vaas_loc)
                 if player.health < 5:
                     if random.randint(1, 2) == 1:
@@ -193,26 +196,26 @@ def main():
 
         if attack_on_field is True:
             attacks.draw_attack()
-            pygame.mixer.music.play()
             if wait >= 120:
                 player.health -= attacks.check_damage()
                 attack_on_field = False
+                pygame.mixer.music.play()
                 thunder_sprite = thunder(screen, attacks.circle_locs)
-                attacks.remove_attack()
                 wait = 0
             else:
                 wait += 1
         if thunder_sprite:
             if not thunder_sprite.ended():
                 thunder_sprite.update()
+                attacks.draw_attack()
             else:
                 thunder_sprite = None
-
+                attacks.remove_attack()
+                alpha_surface.fill(pygame.Color(0, 0, 0, 0))
         player.update()
         update_score(score)
         zeus.update()
         heart_bar.update_hearts(player.health)
-
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

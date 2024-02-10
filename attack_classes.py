@@ -5,11 +5,13 @@ import random
 
 
 class Attacks:
-    def __init__(self, screen, attack_id, player_rect):
+    def __init__(self, screen, alpha_surface, attack_id, player_rect):
         self.current_attack_area = []
         self.circles = []
         self.circle_locs = []
         self.screen = screen
+        self.alpha_surface = alpha_surface
+        self.opacity = 75
         self.attack_id = attack_id
         self.player_rect = player_rect
 
@@ -94,7 +96,9 @@ class Attacks:
     def draw_attack(self):
         for loc in self.circle_locs:
             x_location, y_location = loc
-            pygame.draw.circle(self.screen, 'red', (x_location - 25, y_location - 25), 25)
+            pygame.draw.circle(self.alpha_surface, (255, 0, 0, self.opacity), (x_location - 25, y_location - 25), 25)
+
+
 
 
 

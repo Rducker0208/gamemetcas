@@ -24,5 +24,4 @@ class Vaas:
             x = random.randint(612, self.screen.get_width() - 25)
             y = random.randint(50, 100)
 
-        print(f'Vaas at: ({x}, {y})')
         self.vaas_list.append((x, y))

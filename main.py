@@ -1,5 +1,4 @@
 import random
-import time
 
 import pygame
 
@@ -107,8 +106,26 @@ def update_score(score):
         screen.blit(font.render(str(score), True, (0, 0, 0)), (screen.get_width() - 160, 20))
 
 
-def game_over_screen():
-    pass
+def game_over_screen(score):
+    player.health = 5
+    gameOver = pygame.transform.scale_by(pygame.image.load("Resources/text/gameOver.png"), 1.25)
+    gameOver_rect = gameOver.get_rect(center=(500, 100))
+    respawn = pygame.transform.scale_by(pygame.image.load("Resources/text/respawnText.png"), 0.75)
+    respawn_rect = respawn.get_rect(center=(500, 550))
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    main()
+        screen.blit(bg_intro, bg_intro_rect)
+        screen.blit(gameOver, gameOver_rect)
+        screen.blit(respawn, respawn_rect)
+        screen.blit(font.render(f'Your score was: {score}', True, (230, 249, 255)), (SCREEN_SIZE[0] / 3 - 50, SCREEN_SIZE[1] / 2))
+        pygame.display.update()
+        clock.tick(MAX_FRAMERATE)
 
 
 def update_effect(ticks_since_start):
@@ -136,8 +153,6 @@ def main():
     while True:
         ticks += 1
         effect_ticks += 1
-        if player.health <= 0:
-            return start_screen()
 
         screen.blit(bg_surface, bg_rect)
         screen.blit(alpha_surface, (0, 0))
@@ -216,6 +231,11 @@ def main():
         update_score(score)
         zeus.update()
         heart_bar.update_hearts(player.health)
+        if player.health <= 0:
+            attacks.remove_attack()
+            alpha_surface.fill(pygame.Color(0, 0, 0, 0))
+            player.rect.center = (SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2)
+            return game_over_screen(score)
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

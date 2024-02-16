@@ -1,5 +1,5 @@
 import random
-
+import os
 import pygame
 
 from zeus_class import Zeus
@@ -9,6 +9,7 @@ from hearts_class import hearts
 from attack_classes import Attacks
 from loot_vaas_class import Vaas
 from thunder_class import thunder
+from database_class import database
 
 MAX_FRAMERATE = 60
 SCREEN_SIZE = (1000, 600)
@@ -27,7 +28,9 @@ GREEN = (0, 255, 0)
 # fonts
 # // coole font website: https://textcraft.net/
 font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 75)
+small_font = pygame.font.Font('.\\Resources\\fonts\\Pixeltype.ttf', 50)
 alpha_surface = pygame.Surface(SCREEN_SIZE, pygame.SRCALPHA)
+
 # Player
 player = Player(screen)
 
@@ -64,6 +67,10 @@ score_druif_rect.center = (screen.get_width() - 40, 30)
 pygame.mixer.music.load('Resources/soundeffects/thunder_sfx.mp3')
 pygame.mixer.music.set_volume(.5)
 
+# load highscore
+db = database(os.getlogin())
+highscore = db.load_user()
+
 
 def start_screen():
     player.health = 5
@@ -90,6 +97,10 @@ def start_screen():
         screen.blit(ricasius_text, ricasius_rect)
         screen.blit(battle_text, battle_rect)
         screen.blit(press_space_text, press_space_rect)
+
+        screen.blit(small_font.render(f'Highscore: {highscore}', True, (0, 0, 0)),
+                    (20, 20))
+
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 
@@ -106,7 +117,7 @@ def update_score(score):
         screen.blit(font.render(str(score), True, (0, 0, 0)), (screen.get_width() - 160, 20))
 
 
-def game_over_screen(score):
+def game_over_screen(score, new_highscore):
     player.health = 5
     gameOver = pygame.transform.scale_by(pygame.image.load("Resources/text/gameOver.png"), 1.25)
     gameOver_rect = gameOver.get_rect(center=(500, 100))
@@ -116,14 +127,21 @@ def game_over_screen(score):
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                print(db.load_user())
                 quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     main()
+
         screen.blit(bg_intro, bg_intro_rect)
         screen.blit(gameOver, gameOver_rect)
         screen.blit(respawn, respawn_rect)
         screen.blit(font.render(f'Your score was: {score}', True, (230, 249, 255)), (SCREEN_SIZE[0] / 3 - 50, SCREEN_SIZE[1] / 2))
+
+        if new_highscore is True:
+            screen.blit(font.render(f'New highscore!', True, (230, 249, 255)),
+                        (SCREEN_SIZE[0] / 3, SCREEN_SIZE[1] / 2 + 50))
+
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 
@@ -156,6 +174,7 @@ def main():
 
         screen.blit(bg_surface, bg_rect)
         screen.blit(alpha_surface, (0, 0))
+
         # // elke 5 seconden wordt er een aanval gestart of gestopt
         if ticks % 300 == 0:
             if attack_on_field is False:
@@ -219,6 +238,7 @@ def main():
                 wait = 0
             else:
                 wait += 1
+
         if thunder_sprite:
             if not thunder_sprite.ended():
                 thunder_sprite.update()
@@ -231,11 +251,20 @@ def main():
         update_score(score)
         zeus.update()
         heart_bar.update_hearts(player.health)
+
         if player.health <= 0:
             attacks.remove_attack()
             alpha_surface.fill(pygame.Color(0, 0, 0, 0))
             player.rect.center = (SCREEN_SIZE[0] / 2, SCREEN_SIZE[1] / 2)
-            return game_over_screen(score)
+
+            if score > highscore:
+                db.update_user(score)
+                new_highscore = True
+            else:
+                new_highscore = False
+
+            return game_over_screen(score, new_highscore)
+
         pygame.display.update()
         clock.tick(MAX_FRAMERATE)
 

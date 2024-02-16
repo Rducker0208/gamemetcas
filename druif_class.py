@@ -34,7 +34,6 @@ class Druif:
             self.y = random.randint(50, 100)
             spawn_zone = 3
 
-
     def drawDruif(self):
         rotated_image = pygame.transform.rotate(self.image, self.angle)
         self.rect = rotated_image.get_rect(center=self.image.get_rect(center=(self.x, self.y)).center)

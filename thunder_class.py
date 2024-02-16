@@ -2,6 +2,7 @@ import pygame
 import os
 import random
 
+
 class thunder:
     def __init__(self, screen, location):
         self.image_count = 0

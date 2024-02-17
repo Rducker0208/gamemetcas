@@ -1,8 +1,5 @@
 import random
 
-import pygame
-
-
 class Vaas:
     def __init__(self, screen):
         self.vaas_list = []

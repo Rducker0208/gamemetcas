@@ -63,9 +63,9 @@ score_druif_image = pygame.transform.scale_by(pygame.image.load("Resources/grape
 score_druif_rect = score_druif_image.get_rect()
 score_druif_rect.center = (screen.get_width() - 40, 30)
 
-# thunder
-pygame.mixer.music.load('Resources/soundeffects/thunder_sfx.mp3')
-pygame.mixer.music.set_volume(.5)
+# sfx
+pygame.mixer.Channel(1).play(pygame.mixer.Sound('.\\Resources\\soundeffects\\mainTheme.mp3'), loops=-1)
+pygame.mixer.Channel(0).set_volume(0.5)
 
 # load highscore
 db = database(os.getlogin())
@@ -233,7 +233,7 @@ def main():
             if wait >= 120:
                 player.health -= attacks.check_damage()
                 attack_on_field = False
-                pygame.mixer.music.play()
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('Resources/soundeffects/thunder_sfx.mp3'))
                 thunder_sprite = thunder(screen, attacks.circle_locs)
                 wait = 0
             else:

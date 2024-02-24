@@ -66,6 +66,7 @@ score_druif_rect.center = (screen.get_width() - 40, 30)
 # sfx
 pygame.mixer.Channel(1).play(pygame.mixer.Sound('.\\Resources\\soundeffects\\mainTheme.mp3'), loops=-1)
 pygame.mixer.Channel(0).set_volume(0.5)
+pygame.mixer.Channel(1).set_volume(0.3)
 
 # load highscore
 db = database(os.getlogin())
